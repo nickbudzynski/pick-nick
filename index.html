@@ -873,16 +873,13 @@ function vBill(){
     <div class="thanks" style="text-align:left">Pick Nick nimmt keine Gebühren. Dein Fahrer hat sich nur ein paar Kleinigkeiten mitgenommen:</div>
     ${X.length ? X.map(([n,p]) => `<div class="ln"><span>${esc(n)}</span><span>${eur(p)}</span></div>`).join("") : `<div class="ln"><span>Heute nichts mitgenommen 😇</span><span>${eur(0)}</span></div>`}
     <div class="tot"><span>Gesamt</span><span>${eur(v.s)}</span></div>
-    <div class="thanks">Fahrer: Nick · zahlbar bar, per PayPal oder in Umarmungen</div>
+    <div class="thanks">Fahrer: Nick · zahlbar bar${CONFIG.paypalMe ? " oder per PayPal" : ""}</div>
   </div>
   <div class="panel" style="margin-top:8px">
     <h3 style="text-align:center">Wie war deine Lieferung?</h3>
     <div class="stars" role="group" aria-label="Bewertung">${[1,2,3,4,5].map(n => `<button data-star="${n}" class="${n<=S.stars?"on":""}" aria-label="${n} Sterne">⭐</button>`).join("")}</div>
     ${pp ? `<a class="btn big" href="${esc(pp)}" target="_blank" rel="noopener">Mit PayPal bezahlen · ${eur(v.s)}</a>` : ""}
-    <div class="actions">
-      <button class="btn secondary" data-pay="bar">💶 Bar bezahlt</button>
-      <button class="btn secondary" data-pay="hug">🤗 In Umarmungen</button>
-    </div>
+    <button class="btn secondary" data-pay="bar">💶 Bar bezahlt, Nick Bescheid geben</button>
     ${pp ? `<button class="btn ghost" data-pay="pp">Mit PayPal bezahlt, Nick Bescheid geben</button>` : ""}
   </div>
   <a class="btn ghost" href="#mama">Zur App</a>`;
@@ -890,8 +887,7 @@ function vBill(){
 function payMsg(how){
   const v = S.inv, st = S.stars ? "\n" + "⭐".repeat(S.stars) + " für den Fahrer" : "";
   const t = { bar:`💶 Rechnung ${v.id} (${eur(v.s)}) bezahlt: bar auf die Hand.`,
-              pp:`💸 Rechnung ${v.id} (${eur(v.s)}) per PayPal bezahlt.`,
-              hug:`🤗 Rechnung ${v.id} (${eur(v.s)}) zahle ich in Umarmungen. Abholung jederzeit.` }[how];
+              pp:`💸 Rechnung ${v.id} (${eur(v.s)}) per PayPal bezahlt.` }[how];
   openLink(wa(CONFIG.nickPhone, t + st));
 }
 
